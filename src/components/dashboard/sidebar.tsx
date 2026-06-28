@@ -1,37 +1,15 @@
 "use client";
 
-import { Activity, Bot, CreditCard, LayoutDashboard, Settings, Shield, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AdminIcon, type DashboardNavProps, NAV_ITEMS } from "@/components/dashboard/nav-items";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
 import { UserMenu } from "@/components/dashboard/user-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const NAV: {
-  href: string;
-  label: string;
-  icon: typeof LayoutDashboard;
-  exact?: boolean;
-  example?: boolean;
-}[] = [
-  { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/ai", label: "AI Assistant", icon: Bot, example: true },
-  { href: "/dashboard/members", label: "Members", icon: Users },
-  { href: "/dashboard/usage", label: "Usage", icon: Activity },
-  { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
-  { href: "/dashboard/settings", label: "Settings", icon: Settings },
-];
-
-interface SidebarProps {
-  user: { name: string; email: string; image: string | null };
-  activeOrg: { id: string; name: string; slug: string; plan: string };
-  memberships: { id: string; name: string; slug: string; role: string }[];
-  superAdmin: boolean;
-}
-
-export function Sidebar({ user, activeOrg, memberships, superAdmin }: SidebarProps) {
+export function Sidebar({ user, activeOrg, memberships, superAdmin }: DashboardNavProps) {
   const pathname = usePathname();
 
   return (
@@ -50,7 +28,7 @@ export function Sidebar({ user, activeOrg, memberships, superAdmin }: SidebarPro
       </div>
 
       <nav className="flex-1 space-y-1 p-3">
-        {NAV.map((item) => {
+        {NAV_ITEMS.map((item) => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           const Icon = item.icon;
           return (
@@ -85,7 +63,7 @@ export function Sidebar({ user, activeOrg, memberships, superAdmin }: SidebarPro
                 : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
             )}
           >
-            <Shield className="size-4" />
+            <AdminIcon className="size-4" />
             Admin
           </Link>
         )}

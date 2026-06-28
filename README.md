@@ -66,7 +66,7 @@ No `.env`, no database, no Stripe account, no API keys. It just runs.
 | Layer | Choice |
 | --- | --- |
 | Framework | **Next.js 16** (App Router, RSC, Server Actions), React 19, TypeScript (strict) |
-| UI | Tailwind CSS v4, Radix primitives, a dark premium design system |
+| UI | Tailwind CSS v4, Radix primitives, a token-driven design system with light & dark themes |
 | Database | **Drizzle ORM** — embedded **PGlite** in dev ↔ **Postgres / Neon** in prod |
 | Auth | **Better Auth** — email+password, OAuth, organizations, admin + impersonation |
 | Billing | **Stripe** (subscriptions + usage metering) behind a provider interface, with a mock provider for zero-config |
@@ -93,6 +93,13 @@ chat request → check org credit balance / plan overage policy
             → on finish: count tokens → deduct credits (atomic, ledgered)
             → report overage to Stripe as a metered usage event
 ```
+
+## Theming & layout
+
+Every component is built on semantic design tokens (`bg-card`, `text-foreground`, `bg-brand`, …) defined once in [`src/app/globals.css`](src/app/globals.css) — so the whole app re-skins from one file. Two switches ship out of the box:
+
+- **Light / dark mode** — a persisted toggle (next-themes) in the sidebar and marketing header. The `.dark` class overrides the palette vars via `@theme inline`; no per-component changes.
+- **Nav layout** — set `NEXT_PUBLIC_NAV_LAYOUT=topnav` for a horizontal top bar instead of the left sidebar (default `sidebar`).
 
 ## Going to production
 

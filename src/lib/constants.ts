@@ -18,3 +18,11 @@ export const ROUTES = {
   settings: "/dashboard/settings",
   admin: "/admin",
 } as const;
+
+/**
+ * Dashboard navigation layout. "sidebar" (default) renders a fixed left rail;
+ * "topnav" renders a horizontal top bar with full-width content. Flip without
+ * touching code via the NEXT_PUBLIC_NAV_LAYOUT build env var.
+ */
+export const NAV_LAYOUT: "sidebar" | "topnav" =
+  process.env.NEXT_PUBLIC_NAV_LAYOUT === "topnav" ? "topnav" : "sidebar";

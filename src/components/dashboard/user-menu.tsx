@@ -17,8 +17,10 @@ import { initials } from "@/lib/utils";
 
 export function UserMenu({
   user,
+  compact = false,
 }: {
   user: { name: string; email: string; image: string | null };
+  compact?: boolean;
 }) {
   const router = useRouter();
 
@@ -30,17 +32,29 @@ export function UserMenu({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left outline-none transition-colors hover:bg-accent/50">
+      <DropdownMenuTrigger
+        className={
+          compact
+            ? "flex items-center rounded-lg p-0.5 outline-none transition-colors hover:bg-accent/50"
+            : "flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left outline-none transition-colors hover:bg-accent/50"
+        }
+      >
         <Avatar className="size-8">
           {user.image && <AvatarImage src={user.image} alt={user.name} />}
           <AvatarFallback>{initials(user.name)}</AvatarFallback>
         </Avatar>
-        <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-medium">{user.name}</span>
-          <span className="block truncate text-xs text-muted-foreground">{user.email}</span>
-        </span>
+        {!compact && (
+          <span className="min-w-0 flex-1">
+            <span className="block truncate text-sm font-medium">{user.name}</span>
+            <span className="block truncate text-xs text-muted-foreground">{user.email}</span>
+          </span>
+        )}
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="top" className="w-56">
+      <DropdownMenuContent
+        align={compact ? "end" : "start"}
+        side={compact ? "bottom" : "top"}
+        className="w-56"
+      >
         <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
