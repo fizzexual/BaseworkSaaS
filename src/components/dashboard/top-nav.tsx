@@ -33,7 +33,7 @@ export function TopNav({
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-5">
         <Link href="/dashboard" className="flex shrink-0 items-center gap-2">
           <span className="grid size-7 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
-            B
+            {brandName.charAt(0).toUpperCase()}
           </span>
           <span className="hidden font-semibold tracking-tight lg:inline">{brandName}</span>
         </Link>

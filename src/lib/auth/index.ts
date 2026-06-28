@@ -3,7 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { admin, organization } from "better-auth/plugins";
-import { and, eq } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 import { APP_NAME } from "@/lib/constants";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema";
@@ -78,6 +78,7 @@ export const auth = betterAuth({
                 and(
                   eq(schema.invitations.email, user.email),
                   eq(schema.invitations.status, "pending"),
+                  gt(schema.invitations.expiresAt, new Date()),
                 ),
               )
               .limit(1);

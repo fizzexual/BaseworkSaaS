@@ -25,7 +25,7 @@ export function Sidebar({
       <div className="flex h-16 items-center gap-2 border-b border-border px-5">
         <Link href="/dashboard" className="flex items-center gap-2">
           <span className="grid size-7 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
-            B
+            {brandName.charAt(0).toUpperCase()}
           </span>
           <span className="font-semibold tracking-tight">{brandName}</span>
         </Link>

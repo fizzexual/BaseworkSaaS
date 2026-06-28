@@ -99,11 +99,16 @@ export async function ensureKnownFlags(): Promise<void> {
   const have = new Set(existing.map((r) => r.key));
   const missing = Object.entries(KNOWN_FLAGS).filter(([key]) => !have.has(key));
   if (missing.length === 0) return;
-  await db.insert(featureFlags).values(
-    missing.map(([key, description]) => ({
-      key,
-      description,
-      enabled: DEFAULT_ON.has(key),
-    })),
-  );
+  await db
+    .insert(featureFlags)
+    .values(
+      missing.map(([key, description]) => ({
+        key,
+        description,
+        enabled: DEFAULT_ON.has(key),
+      })),
+    )
+    // Concurrent first-load requests can race to seed the same keys; a duplicate
+    // insert must be a no-op, not a primary-key violation.
+    .onConflictDoNothing({ target: featureFlags.key });
 }

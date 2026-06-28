@@ -6,8 +6,10 @@ import { lastUserText, SYSTEM_PROMPT, uiMessageText } from "@/lib/ai/prompt";
 import { resolveModel } from "@/lib/ai/providers";
 import { appendMessage, ensureThread } from "@/lib/ai/threads";
 import { getBillingSummary } from "@/lib/billing/subscriptions";
+import { isModuleEnabled } from "@/lib/flags";
 import { scopedLogger } from "@/lib/observability/logger";
 import { requireActiveOrg } from "@/server/context";
+import { isMaintenanceLocked } from "@/server/guards";
 
 export const maxDuration = 60;
 
@@ -19,6 +21,16 @@ export async function POST(req: Request) {
     ctx = await requireActiveOrg();
   } catch {
     return Response.json({ error: "unauthorized" }, { status: 401 });
+  }
+
+  // The super-admin's module/maintenance switches are enforced here, not just in
+  // the dashboard UI — so a disabled module or a maintenance freeze actually
+  // stops this data endpoint.
+  if (!(await isModuleEnabled("ai"))) {
+    return Response.json({ error: "module_disabled" }, { status: 404 });
+  }
+  if (await isMaintenanceLocked(ctx.user)) {
+    return Response.json({ error: "maintenance" }, { status: 503 });
   }
 
   const body = (await req.json()) as { messages?: UIMessage[]; threadId?: string };

@@ -7,10 +7,13 @@ import type { PlanId } from "@/lib/db/schema";
 import { billingMode, env } from "@/lib/env";
 import { assertPermission } from "@/lib/rbac";
 import { requireActiveOrg } from "@/server/context";
+import { assertModuleEnabled, assertWritable } from "@/server/guards";
 
 export async function startCheckout(plan: PlanId) {
   const ctx = await requireActiveOrg();
   assertPermission(ctx.role, "billing:manage");
+  await assertModuleEnabled("billing");
+  await assertWritable(ctx.user);
   planById(plan); // validate plan id
 
   await audit({
@@ -60,6 +63,8 @@ export async function startCheckout(plan: PlanId) {
 export async function openBillingPortal() {
   const ctx = await requireActiveOrg();
   assertPermission(ctx.role, "billing:manage");
+  await assertModuleEnabled("billing");
+  await assertWritable(ctx.user);
 
   // Mock mode has no real portal — just return to billing.
   if (billingMode === "mock") {

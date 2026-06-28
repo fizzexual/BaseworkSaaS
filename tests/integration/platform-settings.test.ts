@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { platformSettings } from "@/lib/db/schema";
 import { getModuleStates, isModuleEnabled, setFlag } from "@/lib/flags";
 import { getPlatformSettings, updatePlatformSettings } from "@/lib/settings";
+import { assertModuleEnabled, assertWritable, isMaintenanceLocked } from "@/server/guards";
 
 describe("platform settings", () => {
   it("returns code defaults when no settings row exists", async () => {
@@ -54,5 +55,30 @@ describe("feature modules", () => {
     const states = await getModuleStates();
     expect(states.usage).toBe(false);
     expect(states.ai).toBe(true);
+  });
+});
+
+describe("server guards (enforcement boundary)", () => {
+  const admin = { email: "admin@basework.dev", role: "admin" };
+  const member = { email: "member@acme.test", role: "user" };
+
+  it("assertModuleEnabled passes when on and throws when off", async () => {
+    await getModuleStates(); // ensure flag rows exist
+    await setFlag("modules.billing", true);
+    await expect(assertModuleEnabled("billing")).resolves.toBeUndefined();
+    await setFlag("modules.billing", false);
+    await expect(assertModuleEnabled("billing")).rejects.toThrow();
+  });
+
+  it("maintenance lock applies to non-admins only", async () => {
+    await updatePlatformSettings({ maintenanceMode: false });
+    expect(await isMaintenanceLocked(member)).toBe(false);
+
+    await updatePlatformSettings({ maintenanceMode: true });
+    expect(await isMaintenanceLocked(member)).toBe(true);
+    expect(await isMaintenanceLocked(admin)).toBe(false); // super-admin exempt
+
+    await expect(assertWritable(member)).rejects.toThrow();
+    await expect(assertWritable(admin)).resolves.toBeUndefined();
   });
 });

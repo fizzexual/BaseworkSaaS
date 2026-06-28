@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { MODULE_LABELS, MODULES, type ModuleKey } from "@/lib/modules";
+import type { NavLayout, ThemePref } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 import {
   adminToggleModule,
@@ -19,8 +20,8 @@ const DEFAULT_ACCENT = "#5b47fb";
 
 interface Props {
   appearance: {
-    navLayout: "sidebar" | "topnav";
-    defaultTheme: "light" | "dark" | "system";
+    navLayout: NavLayout;
+    defaultTheme: ThemePref;
     brandName: string;
     brandColor: string;
   };

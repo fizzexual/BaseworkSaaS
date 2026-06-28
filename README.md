@@ -106,8 +106,8 @@ Every component is built on semantic design tokens (`bg-card`, `text-foreground`
 A super-admin (global `admin` role or a `SUPER_ADMIN_EMAILS` address) configures the whole app at runtime from **`/admin/settings`** — no redeploy:
 
 - **Appearance** — nav layout, default theme, brand name, and accent color, applied app-wide and live.
-- **Feature modules** — switch AI, Billing, Members, or Usage off; a disabled module disappears from the nav and its routes redirect.
-- **Access** — close sign-ups (invite-only mode — existing invitations still work) or flip on maintenance mode, which locks the app for everyone except admins.
+- **Feature modules** — switch AI, Billing, Members, or Usage off; a disabled module disappears from the nav, its pages redirect, and its API route / server actions reject (enforced server-side, not just in the UI).
+- **Access** — close sign-ups (invite-only mode — unexpired invitations still work) or flip on maintenance mode, which locks the app for non-admins in both the UI and at the mutation boundary.
 
 Settings persist in a `platform_settings` singleton row; module on/off rides the existing feature-flags table. The env flags seed the initial defaults, and the stored values override them once set — so it still boots zero-config.
 
