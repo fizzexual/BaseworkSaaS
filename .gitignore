@@ -1,0 +1,36 @@
+# dependencies
+/node_modules
+.pnpm-store
+
+# next.js
+/.next/
+/out/
+/build
+next-env.d.ts
+
+# env files (keep the example)
+.env
+.env*.local
+.env.development
+.env.production
+!.env.example
+
+# embedded PGlite dev database
+/.pglite/
+*.pglite
+
+# testing
+/coverage
+/playwright-report
+/test-results
+/blob-report
+/.playwright
+
+# editors / os
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.pem
+*.log
+*.tsbuildinfo
