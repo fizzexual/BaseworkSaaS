@@ -2,15 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useBrandName } from "@/components/brand-provider";
 import { AdminIcon, type DashboardNavProps, NAV_ITEMS } from "@/components/dashboard/nav-items";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
 import { UserMenu } from "@/components/dashboard/user-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export function Sidebar({ user, activeOrg, memberships, superAdmin }: DashboardNavProps) {
+export function Sidebar({
+  user,
+  activeOrg,
+  memberships,
+  superAdmin,
+  moduleStates,
+}: DashboardNavProps) {
   const pathname = usePathname();
+  const brandName = useBrandName();
+  const items = NAV_ITEMS.filter((item) => !item.module || moduleStates[item.module]);
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-border bg-card/60 backdrop-blur md:flex">
@@ -19,7 +27,7 @@ export function Sidebar({ user, activeOrg, memberships, superAdmin }: DashboardN
           <span className="grid size-7 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
             B
           </span>
-          <span className="font-semibold tracking-tight">{APP_NAME}</span>
+          <span className="font-semibold tracking-tight">{brandName}</span>
         </Link>
       </div>
 
@@ -28,7 +36,7 @@ export function Sidebar({ user, activeOrg, memberships, superAdmin }: DashboardN
       </div>
 
       <nav className="flex-1 space-y-1 p-3">
-        {NAV_ITEMS.map((item) => {
+        {items.map((item) => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           const Icon = item.icon;
           return (

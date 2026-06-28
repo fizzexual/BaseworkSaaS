@@ -2,15 +2,23 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useBrandName } from "@/components/brand-provider";
 import { AdminIcon, type DashboardNavProps, NAV_ITEMS } from "@/components/dashboard/nav-items";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
 import { UserMenu } from "@/components/dashboard/user-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export function TopNav({ user, activeOrg, memberships, superAdmin }: DashboardNavProps) {
+export function TopNav({
+  user,
+  activeOrg,
+  memberships,
+  superAdmin,
+  moduleStates,
+}: DashboardNavProps) {
   const pathname = usePathname();
+  const brandName = useBrandName();
+  const items = NAV_ITEMS.filter((item) => !item.module || moduleStates[item.module]);
 
   const linkCls = (active: boolean) =>
     cn(
@@ -27,11 +35,11 @@ export function TopNav({ user, activeOrg, memberships, superAdmin }: DashboardNa
           <span className="grid size-7 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
             B
           </span>
-          <span className="hidden font-semibold tracking-tight lg:inline">{APP_NAME}</span>
+          <span className="hidden font-semibold tracking-tight lg:inline">{brandName}</span>
         </Link>
 
         <nav className="flex flex-1 items-center gap-1 overflow-x-auto">
-          {NAV_ITEMS.map((item) => {
+          {items.map((item) => {
             const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
             const Icon = item.icon;
             return (

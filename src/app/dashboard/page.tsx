@@ -12,6 +12,7 @@ import { getBillingSummary } from "@/lib/billing/subscriptions";
 import { APP_GITHUB_URL } from "@/lib/constants";
 import { db } from "@/lib/db";
 import { members, usageEvents, users } from "@/lib/db/schema";
+import { getModuleStates } from "@/lib/flags";
 import { formatNumber } from "@/lib/utils";
 import { requireActiveOrg } from "@/server/context";
 
@@ -41,7 +42,7 @@ export default async function OverviewPage() {
   const org = ctx.activeOrg;
   const now = Date.now();
 
-  const [summary, memberRows, usage, memberUsers] = await Promise.all([
+  const [summary, memberRows, usage, memberUsers, moduleStates] = await Promise.all([
     getBillingSummary(org.id),
     db.select({ id: members.id }).from(members).where(eq(members.organizationId, org.id)),
     db
@@ -63,6 +64,7 @@ export default async function OverviewPage() {
       .from(members)
       .innerJoin(users, eq(members.userId, users.id))
       .where(eq(members.organizationId, org.id)),
+    getModuleStates(),
   ]);
 
   const buildSeries = (
@@ -206,24 +208,30 @@ export default async function OverviewPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <QuickAction
-          href="/dashboard/ai"
-          title="AI assistant (example)"
-          description="An example metered feature — stream a reply and watch usage credits tick down."
-          icon={Bot}
-        />
-        <QuickAction
-          href="/dashboard/members"
-          title="Invite your team"
-          description="Add members and assign fine-grained roles."
-          icon={Users}
-        />
-        <QuickAction
-          href="/dashboard/billing"
-          title="Manage billing"
-          description="Upgrade your plan or open the customer portal."
-          icon={CreditCard}
-        />
+        {moduleStates.ai && (
+          <QuickAction
+            href="/dashboard/ai"
+            title="AI assistant (example)"
+            description="An example metered feature — stream a reply and watch usage credits tick down."
+            icon={Bot}
+          />
+        )}
+        {moduleStates.members && (
+          <QuickAction
+            href="/dashboard/members"
+            title="Invite your team"
+            description="Add members and assign fine-grained roles."
+            icon={Users}
+          />
+        )}
+        {moduleStates.billing && (
+          <QuickAction
+            href="/dashboard/billing"
+            title="Manage billing"
+            description="Upgrade your plan or open the customer portal."
+            icon={CreditCard}
+          />
+        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-dashed border-border bg-card/40 px-4 py-3 text-sm">

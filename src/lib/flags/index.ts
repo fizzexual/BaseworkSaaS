@@ -1,6 +1,7 @@
 import { and, asc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { type FeatureFlag, featureFlagOverrides, featureFlags } from "@/lib/db/schema";
+import { MODULES, type ModuleKey, moduleFlagKey } from "@/lib/modules";
 
 /** Flags the app ships with. Upserted on first read in the admin panel. */
 export const KNOWN_FLAGS: Record<string, string> = {
@@ -8,7 +9,19 @@ export const KNOWN_FLAGS: Record<string, string> = {
   "billing.usage_overage": "Usage-based overage billing",
   "admin.impersonation": "Super-admin impersonation",
   "ai.byo_keys": "Bring-your-own provider keys",
+  "modules.ai": "AI Assistant module (nav + routes)",
+  "modules.billing": "Billing module (nav + routes)",
+  "modules.members": "Members & teams module (nav + routes)",
+  "modules.usage": "Usage & metering module (nav + routes)",
 };
+
+/** Flags enabled out of the box (modules are on by default). */
+const DEFAULT_ON = new Set<string>([
+  "ai.assistant",
+  "billing.usage_overage",
+  "admin.impersonation",
+  ...MODULES.map(moduleFlagKey),
+]);
 
 function hashToPercent(input: string): number {
   let h = 0;
@@ -54,6 +67,32 @@ export async function setFlag(key: string, enabled: boolean): Promise<void> {
     .where(eq(featureFlags.key, key));
 }
 
+/**
+ * Whether a feature module is enabled. A missing flag row counts as enabled, so
+ * modules are on by default until a super-admin explicitly switches one off.
+ */
+export async function isModuleEnabled(module: ModuleKey): Promise<boolean> {
+  const [flag] = await db
+    .select({ enabled: featureFlags.enabled })
+    .from(featureFlags)
+    .where(eq(featureFlags.key, moduleFlagKey(module)))
+    .limit(1);
+  return flag ? flag.enabled : true;
+}
+
+/** Enabled-state for every module in one query (for the shell + admin UI). */
+export async function getModuleStates(): Promise<Record<ModuleKey, boolean>> {
+  await ensureKnownFlags();
+  const rows = await db
+    .select({ key: featureFlags.key, enabled: featureFlags.enabled })
+    .from(featureFlags);
+  const byKey = new Map(rows.map((r) => [r.key, r.enabled]));
+  return Object.fromEntries(MODULES.map((m) => [m, byKey.get(moduleFlagKey(m)) ?? true])) as Record<
+    ModuleKey,
+    boolean
+  >;
+}
+
 /** Idempotently insert any KNOWN_FLAGS rows that don't exist yet. */
 export async function ensureKnownFlags(): Promise<void> {
   const existing = await db.select({ key: featureFlags.key }).from(featureFlags);
@@ -64,8 +103,7 @@ export async function ensureKnownFlags(): Promise<void> {
     missing.map(([key, description]) => ({
       key,
       description,
-      enabled:
-        key === "ai.assistant" || key === "billing.usage_overage" || key === "admin.impersonation",
+      enabled: DEFAULT_ON.has(key),
     })),
   );
 }

@@ -1,4 +1,5 @@
 import { CheckCircle2, ExternalLink, Info } from "lucide-react";
+import { redirect } from "next/navigation";
 import { PlanCards } from "@/components/dashboard/plan-cards";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PLANS } from "@/lib/billing/plans";
 import { getBillingSummary } from "@/lib/billing/subscriptions";
 import { billingMode } from "@/lib/env";
+import { isModuleEnabled } from "@/lib/flags";
 import { can } from "@/lib/rbac";
 import { formatCurrency, formatDate, formatNumber } from "@/lib/utils";
 import { openBillingPortal } from "@/server/actions/billing";
@@ -18,6 +20,7 @@ export default async function BillingPage({
 }: {
   searchParams: Promise<{ upgraded?: string; canceled?: string }>;
 }) {
+  if (!(await isModuleEnabled("billing"))) redirect("/dashboard");
   const ctx = await requireActiveOrg();
   const sp = await searchParams;
   const summary = await getBillingSummary(ctx.activeOrg.id);

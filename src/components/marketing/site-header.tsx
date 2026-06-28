@@ -1,8 +1,11 @@
+"use client";
+
 import { Star } from "lucide-react";
 import Link from "next/link";
+import { useBrandName } from "@/components/brand-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { APP_GITHUB_URL, APP_NAME, ROUTES } from "@/lib/constants";
+import { APP_GITHUB_URL, ROUTES } from "@/lib/constants";
 
 const NAV_LINKS = [
   { label: "Features", href: "/#features" },
@@ -11,6 +14,8 @@ const NAV_LINKS = [
 ];
 
 export function SiteHeader() {
+  const brandName = useBrandName();
+
   return (
     <header className="glass sticky top-0 z-50 border-b border-border">
       <div className="container mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-6">
@@ -19,7 +24,7 @@ export function SiteHeader() {
           <span className="bg-brand inline-flex size-7 items-center justify-center rounded-lg shadow-lg shadow-primary/20">
             <span className="size-2.5 rounded-[3px] bg-white/90" />
           </span>
-          <span className="text-base font-semibold tracking-tight">{APP_NAME}</span>
+          <span className="text-base font-semibold tracking-tight">{brandName}</span>
         </Link>
 
         {/* Center nav */}

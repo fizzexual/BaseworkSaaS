@@ -1,7 +1,9 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { APIError } from "better-auth/api";
 import { nextCookies } from "better-auth/next-js";
 import { admin, organization } from "better-auth/plugins";
+import { and, eq } from "drizzle-orm";
 import { APP_NAME } from "@/lib/constants";
 import { db } from "@/lib/db";
 import * as schema from "@/lib/db/schema";
@@ -61,8 +63,31 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        // Auto-grant the global admin role to configured super-admin emails.
         before: async (user) => {
+          // Invite-only mode: when a super-admin has closed sign-ups, only emails
+          // with a pending invitation may create an account.
+          const [settings] = await db
+            .select({ signupsOpen: schema.platformSettings.signupsOpen })
+            .from(schema.platformSettings)
+            .limit(1);
+          if (settings && !settings.signupsOpen) {
+            const [invite] = await db
+              .select({ id: schema.invitations.id })
+              .from(schema.invitations)
+              .where(
+                and(
+                  eq(schema.invitations.email, user.email),
+                  eq(schema.invitations.status, "pending"),
+                ),
+              )
+              .limit(1);
+            if (!invite) {
+              throw new APIError("FORBIDDEN", {
+                message: "Sign-ups are closed. You need an invitation to join.",
+              });
+            }
+          }
+          // Auto-grant the global admin role to configured super-admin emails.
           const role = superAdminEmails.includes(user.email.toLowerCase()) ? "admin" : "user";
           return { data: { ...user, role } };
         },

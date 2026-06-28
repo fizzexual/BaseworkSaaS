@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
 import { DemoBanner } from "@/components/dashboard/demo-banner";
 import { ImpersonationBanner } from "@/components/dashboard/impersonation-banner";
+import { MaintenanceBanner, MaintenanceScreen } from "@/components/dashboard/maintenance-screen";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { TopNav } from "@/components/dashboard/top-nav";
-import { NAV_LAYOUT } from "@/lib/constants";
 import { isDemoMode, isSuperAdmin } from "@/lib/env";
+import { getModuleStates } from "@/lib/flags";
+import { getPlatformSettings } from "@/lib/settings";
 import { getAuthContext } from "@/server/context";
 
 export const dynamic = "force-dynamic";
@@ -31,15 +33,23 @@ export default async function DashboardLayout({ children }: { children: React.Re
     (ctx.user as { role?: string }).role === "admin" || isSuperAdmin(ctx.user.email);
   const impersonating = Boolean((ctx.session as { impersonatedBy?: string }).impersonatedBy);
 
-  const navProps = { user, activeOrg, memberships, superAdmin };
+  const [settings, moduleStates] = await Promise.all([getPlatformSettings(), getModuleStates()]);
+
+  // Maintenance mode locks the app for everyone except super-admins.
+  if (settings.maintenanceMode && !superAdmin) {
+    return <MaintenanceScreen message={settings.maintenanceMessage} />;
+  }
+
+  const navProps = { user, activeOrg, memberships, superAdmin, moduleStates };
   const banners = (
     <>
+      {settings.maintenanceMode && superAdmin && <MaintenanceBanner />}
       {impersonating && <ImpersonationBanner userName={user.name} />}
       {isDemoMode && <DemoBanner />}
     </>
   );
 
-  if (NAV_LAYOUT === "topnav") {
+  if (settings.navLayout === "topnav") {
     return (
       <div className="flex min-h-screen flex-col bg-background">
         <TopNav {...navProps} />

@@ -8,6 +8,13 @@
       "when": 1782638015209,
       "tag": "0000_next_professor_monster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1782680265174,
+      "tag": "0001_chubby_saracen",
+      "breakpoints": true
     }
   ]
 }

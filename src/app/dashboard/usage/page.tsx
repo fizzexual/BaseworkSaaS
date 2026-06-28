@@ -1,11 +1,13 @@
 import { and, desc, eq, gte } from "drizzle-orm";
 import { Bot, CalendarDays, Coins, Zap } from "lucide-react";
+import { redirect } from "next/navigation";
 import { TrendChart } from "@/components/charts/svg";
 import { SparkStat } from "@/components/dashboard/spark-stat";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
 import { usageEvents, users } from "@/lib/db/schema";
+import { isModuleEnabled } from "@/lib/flags";
 import { formatNumber } from "@/lib/utils";
 import { requireActiveOrg } from "@/server/context";
 
@@ -15,6 +17,7 @@ const DAYS = 30;
 const consumed = (c: number) => (c < 0 ? -c : 0);
 
 export default async function UsagePage() {
+  if (!(await isModuleEnabled("usage"))) redirect("/dashboard");
   const ctx = await requireActiveOrg();
   const now = Date.now();
 

@@ -336,6 +336,29 @@ export const featureFlagOverrides = pgTable(
   (t) => [uniqueIndex("flag_overrides_idx").on(t.flagKey, t.organizationId)],
 );
 
+/* ───────────────────────────── Platform settings (global, superadmin) ───────────────────────────── */
+
+/**
+ * Singleton row (id = "default") holding platform-wide configuration the
+ * super-admin controls at runtime from /admin/settings: dashboard appearance
+ * and access policy. Feature-module on/off lives in `featureFlags` (keys
+ * `modules.*`). Absent row ⇒ code defaults (see lib/settings).
+ */
+export const platformSettings = pgTable("platform_settings", {
+  id: text("id").primaryKey(),
+  navLayout: text("nav_layout").$type<"sidebar" | "topnav">().notNull().default("sidebar"),
+  defaultTheme: text("default_theme")
+    .$type<"light" | "dark" | "system">()
+    .notNull()
+    .default("light"),
+  brandName: text("brand_name"),
+  brandColor: text("brand_color"),
+  signupsOpen: boolean("signups_open").notNull().default(true),
+  maintenanceMode: boolean("maintenance_mode").notNull().default(false),
+  maintenanceMessage: text("maintenance_message"),
+  updatedAt,
+});
+
 /* ───────────────────────────── Jobs (durable queue) ───────────────────────────── */
 
 export const jobs = pgTable(
@@ -419,6 +442,7 @@ export type AiMessage = typeof aiMessages.$inferSelect;
 export type ByoKey = typeof byoKeys.$inferSelect;
 export type AuditLog = typeof auditLogs.$inferSelect;
 export type FeatureFlag = typeof featureFlags.$inferSelect;
+export type PlatformSettingsRow = typeof platformSettings.$inferSelect;
 export type Job = typeof jobs.$inferSelect;
 
 /** All tables, for the Better Auth Drizzle adapter `schema` mapping. */
@@ -439,5 +463,6 @@ export const schema = {
   auditLogs,
   featureFlags,
   featureFlagOverrides,
+  platformSettings,
   jobs,
 };

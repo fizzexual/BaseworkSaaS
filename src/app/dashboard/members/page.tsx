@@ -1,13 +1,16 @@
 import { and, eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 import { MembersManager } from "@/components/dashboard/members-manager";
 import { db } from "@/lib/db";
 import { invitations, members, users } from "@/lib/db/schema";
+import { isModuleEnabled } from "@/lib/flags";
 import { can } from "@/lib/rbac";
 import { requireActiveOrg } from "@/server/context";
 
 export const metadata = { title: "Members" };
 
 export default async function MembersPage() {
+  if (!(await isModuleEnabled("members"))) redirect("/dashboard");
   const ctx = await requireActiveOrg();
 
   const rows = await db

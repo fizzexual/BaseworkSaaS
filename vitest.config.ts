@@ -13,6 +13,9 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: { "@": path.resolve(process.cwd(), "src") },
+    alias: {
+      "@": path.resolve(process.cwd(), "src"),
+      "server-only": path.resolve(process.cwd(), "tests/server-only.stub.ts"),
+    },
   },
 });

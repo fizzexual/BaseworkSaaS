@@ -1,7 +1,9 @@
 import type { UIMessage } from "ai";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Chat } from "@/components/dashboard/chat";
 import { getThreadMessages, listThreads } from "@/lib/ai/threads";
+import { isModuleEnabled } from "@/lib/flags";
 import { cn } from "@/lib/utils";
 import { requireActiveOrg } from "@/server/context";
 
@@ -12,6 +14,7 @@ export default async function AiPage({
 }: {
   searchParams: Promise<{ thread?: string }>;
 }) {
+  if (!(await isModuleEnabled("ai"))) redirect("/dashboard");
   const ctx = await requireActiveOrg();
   const { thread } = await searchParams;
   const threads = await listThreads(ctx.activeOrg.id);
