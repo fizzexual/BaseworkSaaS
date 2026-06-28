@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { APP_GITHUB_URL, APP_NAME, ROUTES } from "@/lib/constants";
 
@@ -48,6 +49,7 @@ export function SiteHeader() {
 
         {/* Right actions */}
         <div className="flex items-center gap-2">
+          <ThemeToggle className="size-8" />
           <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
             <Link href={ROUTES.signIn}>Sign in</Link>
           </Button>

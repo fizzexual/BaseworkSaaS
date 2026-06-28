@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { OrgSwitcher } from "@/components/dashboard/org-switcher";
 import { UserMenu } from "@/components/dashboard/user-menu";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -90,8 +91,11 @@ export function Sidebar({ user, activeOrg, memberships, superAdmin }: SidebarPro
         )}
       </nav>
 
-      <div className="border-t border-border p-3">
-        <UserMenu user={user} />
+      <div className="flex items-center gap-2 border-t border-border p-3">
+        <div className="min-w-0 flex-1">
+          <UserMenu user={user} />
+        </div>
+        <ThemeToggle />
       </div>
     </aside>
   );
