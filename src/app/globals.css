@@ -1,46 +1,46 @@
 @import "tailwindcss";
 
-/* ─── Design tokens ─────────────────────────────────────────────────────── */
+/* ─── Design tokens (light, indigo/cyan) ────────────────────────────────── */
 @theme {
-  --color-background: #09090b;
-  --color-foreground: #fafafa;
+  --color-background: #f3f4fb;
+  --color-foreground: #1c2433;
 
-  --color-card: #0d0d11;
-  --color-card-foreground: #fafafa;
-  --color-popover: #101015;
-  --color-popover-foreground: #fafafa;
+  --color-card: #ffffff;
+  --color-card-foreground: #1c2433;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #1c2433;
 
-  --color-primary: #8b5cf6;
+  --color-primary: #5b47fb;
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: #18181b;
-  --color-secondary-foreground: #fafafa;
+  --color-secondary: #eef0f8;
+  --color-secondary-foreground: #313d54;
 
-  --color-muted: #161619;
-  --color-muted-foreground: #a1a1aa;
+  --color-muted: #f1f3fa;
+  --color-muted-foreground: #7c8aa5;
 
-  --color-accent: #27272a;
-  --color-accent-foreground: #fafafa;
+  --color-accent: #eef0f8;
+  --color-accent-foreground: #1c2433;
 
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #fafafa;
+  --color-destructive: #f1416c;
+  --color-destructive-foreground: #ffffff;
 
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
+  --color-success: #1aae6f;
+  --color-warning: #f5a623;
 
-  --color-border: #232329;
-  --color-input: #232329;
-  --color-ring: #8b5cf6;
+  --color-border: #e4e8f1;
+  --color-input: #dde3ef;
+  --color-ring: #5b47fb;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Azeret Mono", ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace;
 
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
-  /* Brand gradient stops */
-  --brand-1: #7c3aed;
-  --brand-2: #db2777;
-  --brand-3: #f97316;
+  /* Brand gradient stops: indigo → blue → cyan */
+  --brand-1: #5b47fb;
+  --brand-2: #2f6dff;
+  --brand-3: #00c2d7;
 }
 
 /* ─── Base ──────────────────────────────────────────────────────────────── */
@@ -56,19 +56,19 @@
     color: var(--color-foreground);
   }
   ::selection {
-    background: color-mix(in oklab, var(--brand-2) 40%, transparent);
+    background: color-mix(in oklab, var(--color-primary) 22%, transparent);
   }
-  /* Slim, dark scrollbars */
+  /* Slim, light scrollbars */
   * {
     scrollbar-width: thin;
-    scrollbar-color: #2a2a31 transparent;
+    scrollbar-color: #c7cedd transparent;
   }
   *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
   *::-webkit-scrollbar-thumb {
-    background: #2a2a31;
+    background: #c7cedd;
     border-radius: 9999px;
   }
 }
@@ -84,28 +84,28 @@
     background-clip: text;
     color: transparent;
   }
-  /* Subtle glassy panel */
+  /* Translucent white panel */
   .glass {
-    background: color-mix(in oklab, var(--color-card) 80%, transparent);
+    background: color-mix(in oklab, var(--color-card) 82%, transparent);
     backdrop-filter: blur(12px);
   }
-  /* Radial glow used behind hero/headers */
+  /* Soft radial brand glow behind hero/headers */
   .glow {
     background:
       radial-gradient(
         60% 60% at 50% 0%,
-        color-mix(in oklab, var(--brand-1) 22%, transparent),
+        color-mix(in oklab, var(--brand-1) 16%, transparent),
         transparent 70%
       ),
       radial-gradient(
-        40% 40% at 80% 10%,
-        color-mix(in oklab, var(--brand-2) 16%, transparent),
+        45% 45% at 82% 8%,
+        color-mix(in oklab, var(--brand-3) 14%, transparent),
         transparent 70%
       );
   }
   /* Faint dotted grid */
   .grid-bg {
-    background-image: radial-gradient(circle at 1px 1px, #ffffff0d 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, rgba(91, 71, 251, 0.08) 1px, transparent 0);
     background-size: 22px 22px;
   }
   .animate-in-up {
