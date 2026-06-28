@@ -51,7 +51,7 @@ export async function startCheckout(plan: PlanId) {
     seats: 1,
     customerId,
     customerEmail: ctx.user.email,
-    successUrl: `${env.APP_URL}/dashboard/billing?upgraded=1`,
+    successUrl: `${env.APP_URL}/api/billing/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
     cancelUrl: `${env.APP_URL}/dashboard/billing?canceled=1`,
   });
   redirect(url);

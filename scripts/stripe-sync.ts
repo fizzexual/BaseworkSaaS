@@ -1,3 +1,4 @@
+import "./_load-env";
 import { PLAN_LIST } from "@/lib/billing/plans";
 import { getStripe } from "@/lib/billing/providers/stripe";
 import { env } from "@/lib/env";

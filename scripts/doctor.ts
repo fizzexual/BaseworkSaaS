@@ -1,3 +1,4 @@
+import "./_load-env";
 import { env, isProduction, runtimeModes } from "@/lib/env";
 
 /** Prints which mode each subsystem is running in. */

@@ -1,3 +1,4 @@
+import "./_load-env";
 import path from "node:path";
 import { db } from "@/lib/db";
 import { dbMode } from "@/lib/env";
