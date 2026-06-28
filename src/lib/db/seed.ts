@@ -67,26 +67,35 @@ export async function seedDemoData() {
     updatedAt: now,
   });
 
-  // Usage history spread across the period so the dashboard chart is populated.
-  const usageRows = Array.from({ length: 26 }).map((_, i) => {
-    const dayOffset = Math.floor(i / 2); // ~2 events/day across ~13 days
-    return {
-      id: nanoid(),
-      organizationId: orgId,
-      userId: i % 2 ? member.id : owner.id,
-      type: "ai.chat" as const,
-      model: "mock:basework-1",
-      inputTokens: 120 + ((i * 17) % 200),
-      outputTokens: 220 + ((i * 29) % 320),
-      credits: -(6 + ((i * 7) % 28)),
-      createdAt: new Date(now.getTime() - dayOffset * 86_400_000 - (i % 2) * 9_000_000),
-    };
-  });
-  const used = usageRows.reduce((sum, r) => sum + Math.abs(r.credits), 0);
+  // ~90 days of usage history so the dashboard charts (day/week/month) look real.
+  const usageRows: (typeof usageEvents.$inferInsert)[] = [];
+  for (let day = 0; day < 90; day++) {
+    const date = new Date(now.getTime() - day * 86_400_000);
+    const count = Math.max(1, 3 + Math.round(2.2 * Math.sin(day / 4)) + (day < 25 ? 1 : 0));
+    for (let k = 0; k < count; k++) {
+      usageRows.push({
+        id: nanoid(),
+        organizationId: orgId,
+        userId: (day + k) % 3 === 0 ? member.id : owner.id,
+        type: "ai.chat" as const,
+        model: "mock:basework-1",
+        inputTokens: 120 + ((day * 7 + k * 13) % 220),
+        outputTokens: 220 + ((day * 11 + k * 17) % 340),
+        credits: -(5 + ((day + k) % 9) * 3),
+        createdAt: new Date(date.getTime() - k * 3_600_000),
+      });
+    }
+  }
+
+  // The credit balance reflects only the current billing period (last 30 days).
+  const periodCutoff = now.getTime() - 30 * 86_400_000;
+  const usedThisPeriod = usageRows
+    .filter((r) => (r.createdAt as Date).getTime() >= periodCutoff)
+    .reduce((sum, r) => sum + Math.abs(r.credits ?? 0), 0);
 
   await db.insert(creditBalances).values({
     organizationId: orgId,
-    balance: pro.includedCredits - used,
+    balance: Math.max(0, pro.includedCredits - usedThisPeriod),
     includedMonthly: pro.includedCredits,
     overage: 0,
     periodStart: now,
