@@ -1,13 +1,12 @@
-import { env } from "@/lib/env";
 import { scopedLogger } from "@/lib/observability/logger";
 import type { BillingProvider } from "./types";
 
 const log = scopedLogger("billing:mock");
 
 /**
- * Mock billing provider used in zero-config dev. Checkout redirects through an
- * internal route that actually applies the plan, so upgrade/downgrade flows are
- * fully exercised end-to-end without a Stripe account.
+ * Mock billing provider for zero-config dev. In mock mode the server action
+ * (`startCheckout`) applies plan changes directly, so these checkout/portal
+ * methods are thin stand-ins kept only for interface parity with Stripe.
  */
 export const mockProvider: BillingProvider = {
   mode: "mock",
@@ -16,19 +15,12 @@ export const mockProvider: BillingProvider = {
     return `mock_cus_${organizationId}`;
   },
 
-  async createCheckoutSession({ organizationId, plan, successUrl, cancelUrl }) {
-    const url = new URL("/api/billing/mock-checkout", env.APP_URL);
-    url.searchParams.set("org", organizationId);
-    url.searchParams.set("plan", plan);
-    url.searchParams.set("redirect", successUrl);
-    url.searchParams.set("cancel", cancelUrl);
-    return { url: url.toString() };
+  async createCheckoutSession({ successUrl }) {
+    return { url: successUrl };
   },
 
   async createPortalSession({ returnUrl }) {
-    const url = new URL(returnUrl);
-    url.searchParams.set("portal", "mock");
-    return { url: url.toString() };
+    return { url: returnUrl };
   },
 
   async reportUsage({ quantity }) {
