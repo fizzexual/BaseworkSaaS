@@ -54,12 +54,19 @@ export default async function AiPage({
         </div>
       </aside>
 
-      <div className="min-w-0 flex-1">
-        <Chat
-          key={activeThreadId ?? "new"}
-          threadId={activeThreadId}
-          initialMessages={initialMessages}
-        />
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <p className="rounded-lg border border-dashed border-border bg-card/40 px-3 py-2 text-xs text-muted-foreground">
+          <span className="font-medium text-foreground">Example module.</span> Demonstrates the
+          usage-metering primitive — delete <span className="font-mono">src/app/dashboard/ai</span>{" "}
+          and <span className="font-mono">src/lib/ai</span> to remove it.
+        </p>
+        <div className="min-h-0 flex-1">
+          <Chat
+            key={activeThreadId ?? "new"}
+            threadId={activeThreadId}
+            initialMessages={initialMessages}
+          />
+        </div>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export function CreditMeter({
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
-        <CardTitle className="text-base">AI credits</CardTitle>
+        <CardTitle className="text-base">Usage credits</CardTitle>
         {overage > 0 && <Badge variant="warning">+{formatNumber(overage)} overage</Badge>}
       </CardHeader>
       <CardContent className="space-y-3">

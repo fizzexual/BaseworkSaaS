@@ -119,7 +119,7 @@ export async function seedDemoData() {
       threadId,
       role: "assistant",
       content:
-        "Auth, multi-tenant orgs with fine-grained RBAC, Stripe billing with usage-based AI credits, an admin panel with impersonation, audit logs, a durable job queue — all running zero-config out of the box.",
+        "Auth, multi-tenant orgs with fine-grained RBAC, Stripe billing with usage-based credit metering, an admin panel with impersonation, audit logs, a durable job queue — all running zero-config out of the box.",
       model: "mock:basework-1",
       inputTokens: 12,
       outputTokens: 48,

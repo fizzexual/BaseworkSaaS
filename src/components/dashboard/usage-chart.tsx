@@ -8,7 +8,7 @@ export function UsageChart({ data }: { data: { label: string; value: number }[] 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">AI usage · last 14 days</CardTitle>
+        <CardTitle className="text-base">Usage · last 14 days</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex items-end gap-1.5" style={{ height: HEIGHT }}>

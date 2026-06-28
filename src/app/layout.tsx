@@ -5,13 +5,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: `${APP_NAME} — The advanced, AI-native SaaS starter`,
+    default: `${APP_NAME} — the complete SaaS template`,
     template: `%s · ${APP_NAME}`,
   },
   description: APP_DESCRIPTION,
   metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
   openGraph: {
-    title: `${APP_NAME} — The advanced, AI-native SaaS starter`,
+    title: `${APP_NAME} — the complete SaaS template`,
     description: APP_DESCRIPTION,
     type: "website",
   },

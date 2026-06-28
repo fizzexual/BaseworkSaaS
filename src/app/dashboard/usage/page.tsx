@@ -36,7 +36,7 @@ export default async function UsagePage() {
     buckets.set(new Date(Date.now() - i * 86_400_000).toISOString().slice(0, 10), 0);
   }
   for (const r of rows) {
-    if (r.type !== "ai.chat") continue;
+    if (r.credits >= 0) continue;
     const key = new Date(r.createdAt).toISOString().slice(0, 10);
     if (buckets.has(key)) buckets.set(key, (buckets.get(key) ?? 0) + Math.abs(r.credits));
   }
@@ -47,7 +47,7 @@ export default async function UsagePage() {
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Usage</h1>
         <p className="text-sm text-muted-foreground">
-          Every AI call is metered and written to an append-only ledger.
+          Every metered action is written to an append-only ledger.
         </p>
       </div>
 
@@ -74,7 +74,7 @@ export default async function UsagePage() {
                 {rows.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-8 text-center text-muted-foreground">
-                      No usage yet — try the AI assistant.
+                      No usage yet — try the example AI assistant.
                     </td>
                   </tr>
                 ) : (

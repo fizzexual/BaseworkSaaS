@@ -73,7 +73,7 @@ export default async function BillingPage({
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">AI credits</CardTitle>
+            <CardTitle className="text-base">Usage credits</CardTitle>
           </CardHeader>
           <CardContent className="space-y-1">
             <div className="text-2xl font-semibold">{formatNumber(summary.balance)}</div>

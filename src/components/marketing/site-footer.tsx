@@ -45,7 +45,7 @@ export function SiteFooter() {
               <span className="text-base font-semibold tracking-tight">{APP_NAME}</span>
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              The advanced, AI-native, multi-tenant SaaS starter. Ship in a weekend.
+              The complete, multi-tenant SaaS template. You bring the product.
             </p>
           </div>
 

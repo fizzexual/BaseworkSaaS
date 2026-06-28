@@ -7,17 +7,17 @@ import { PLAN_LIST } from "@/lib/billing/plans";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Simple, usage-based pricing. Start free, then pay for the AI credits and seats you actually use.",
+    "Simple, usage-based pricing. Start free, then pay for the usage credits and seats you actually use.",
 };
 
 const FAQ: { q: string; a: string }[] = [
   {
     q: "Is it really free to start?",
-    a: "Yes. The Free plan includes 200 AI credits and up to 2 seats every month — no credit card required. The starter itself is open source under the MIT license, so you can clone and run the whole thing locally for $0.",
+    a: "Yes. The Free plan includes 200 usage credits and up to 2 seats every month — no credit card required. The starter itself is open source under the MIT license, so you can clone and run the whole thing locally for $0.",
   },
   {
-    q: "How does AI credit billing work?",
-    a: "Each plan includes a monthly bucket of AI credits. When you exceed it, paid plans bill a small per-credit overage (just $0.01 / credit) so you never hit a hard wall mid-launch. Usage is metered per organization and visible on your dashboard in real time.",
+    q: "How does usage billing work?",
+    a: "Credits are a generic metering primitive — any feature can charge them (the AI module is one example). Each plan includes a monthly bucket; when you exceed it, paid plans bill a small per-credit overage (just $0.01 / credit) so you never hit a hard wall. Usage is metered per organization and visible on your dashboard in real time.",
   },
   {
     q: "Can I self-host?",
@@ -43,8 +43,8 @@ export default function PricingPage() {
             Pricing that scales with <span className="text-gradient">what you ship</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-            Start free and self-host forever. Upgrade when you need more seats, more AI credits, and
-            production-grade support. Every plan is billed transparently — no per-seat traps.
+            Start free and self-host forever. Upgrade when you need more seats, more usage credits,
+            and production-grade support. Every plan is billed transparently — no per-seat traps.
           </p>
         </div>
       </section>
@@ -57,7 +57,7 @@ export default function PricingPage() {
           ))}
         </div>
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          All paid plans bill overage at $0.01 / AI credit. Prices in USD. Cancel anytime.
+          All paid plans bill overage at $0.01 / credit. Prices in USD. Cancel anytime.
         </p>
       </section>
 

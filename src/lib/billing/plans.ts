@@ -6,11 +6,11 @@ export interface Plan {
   description: string;
   /** Monthly price in USD cents. */
   priceMonthly: number;
-  /** AI credits included each billing period. */
+  /** usage credits included each billing period. */
   includedCredits: number;
   /** Seats included; null = unlimited. */
   seats: number | null;
-  /** Cents charged per AI credit consumed beyond the included amount. */
+  /** Cents charged per credit consumed beyond the included amount. */
   overagePerCredit: number;
   features: string[];
   popular?: boolean;
@@ -25,7 +25,12 @@ export const PLANS: Record<PlanId, Plan> = {
     includedCredits: 200,
     seats: 2,
     overagePerCredit: 0,
-    features: ["Up to 2 team members", "200 AI credits / month", "Community support", "1 project"],
+    features: [
+      "Up to 2 team members",
+      "200 usage credits / month",
+      "Community support",
+      "1 project",
+    ],
   },
   pro: {
     id: "pro",
@@ -38,7 +43,7 @@ export const PLANS: Record<PlanId, Plan> = {
     popular: true,
     features: [
       "Up to 10 team members",
-      "5,000 AI credits / month",
+      "5,000 usage credits / month",
       "Usage-based overage billing",
       "Priority email support",
       "Audit log",
@@ -54,7 +59,7 @@ export const PLANS: Record<PlanId, Plan> = {
     overagePerCredit: 1,
     features: [
       "Unlimited team members",
-      "50,000 AI credits / month",
+      "50,000 usage credits / month",
       "Usage-based overage billing",
       "SSO & SAML (bring your own)",
       "SLA & dedicated support",

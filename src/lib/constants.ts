@@ -1,7 +1,7 @@
 export const APP_NAME = "Basework";
 export const APP_DESCRIPTION =
-  "The advanced, AI-native, multi-tenant SaaS starter. Auth, orgs & RBAC, Stripe billing, AI credit metering, and an admin panel — runs zero-config.";
-export const APP_TAGLINE = "Ship your SaaS this weekend, not next quarter.";
+  "The complete, multi-tenant SaaS template. Auth, teams & RBAC, Stripe billing, usage metering, an admin panel, jobs and more — every functionality your product needs, so you just build the product.";
+export const APP_TAGLINE = "Everything your SaaS needs, except the product.";
 export const APP_GITHUB_URL = "https://github.com/fizzexual/BaseworkSaaS";
 
 /** Routes used across the app shell. */

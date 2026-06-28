@@ -1,5 +1,5 @@
 import { and, eq, gte } from "drizzle-orm";
-import { Bot, CreditCard, Users, Zap } from "lucide-react";
+import { Activity, Bot, Boxes, CreditCard, Users, Zap } from "lucide-react";
 import Link from "next/link";
 import { CreditMeter } from "@/components/dashboard/credit-meter";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getBillingSummary } from "@/lib/billing/subscriptions";
+import { APP_GITHUB_URL } from "@/lib/constants";
 import { db } from "@/lib/db";
 import { members, usageEvents } from "@/lib/db/schema";
 import { formatNumber, titleCase } from "@/lib/utils";
@@ -37,7 +38,7 @@ export default async function OverviewPage() {
   }
   let usedThisWindow = 0;
   for (const u of usage) {
-    if (u.type !== "ai.chat") continue;
+    if (u.credits >= 0) continue;
     const key = new Date(u.createdAt).toISOString().slice(0, 10);
     if (buckets.has(key)) buckets.set(key, (buckets.get(key) ?? 0) + Math.abs(u.credits));
     usedThisWindow += Math.abs(u.credits);
@@ -59,6 +60,24 @@ export default async function OverviewPage() {
         </Badge>
       </div>
 
+      {/* "you bring the product" cue — this is a template, not a finished app */}
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-dashed border-border bg-card/40 px-4 py-3 text-sm">
+        <Boxes className="size-4 shrink-0 text-primary" />
+        <span className="text-muted-foreground">
+          <span className="font-medium text-foreground">This is your starting point.</span> Teams,
+          billing, usage metering and admin are wired up — add your product's pages here. The AI
+          assistant is an example module you can delete.
+        </span>
+        <a
+          href={APP_GITHUB_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="ml-auto font-medium text-primary hover:underline"
+        >
+          Read the docs →
+        </a>
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Plan"
@@ -77,7 +96,7 @@ export default async function OverviewPage() {
           label="Used (period)"
           value={formatNumber(usedThisPeriod)}
           hint={`${formatNumber(usedThisWindow)} in last ${DAYS}d`}
-          icon={Bot}
+          icon={Activity}
         />
       </div>
 
@@ -95,8 +114,8 @@ export default async function OverviewPage() {
       <div className="grid gap-4 sm:grid-cols-3">
         <QuickAction
           href="/dashboard/ai"
-          title="Open AI Assistant"
-          description="Stream a reply and watch credits meter in real time."
+          title="AI assistant (example)"
+          description="An example metered feature — stream a reply and watch usage credits tick down."
           icon={Bot}
         />
         <QuickAction

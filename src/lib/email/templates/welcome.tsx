@@ -26,15 +26,15 @@ export function WelcomeEmail({
         <Container style={container}>
           <Heading style={heading}>Welcome, {name} 👋</Heading>
           <Text style={text}>
-            Your Basework workspace is ready. Invite your team, explore the AI assistant, and wire
-            up billing whenever you're ready.
+            Your Basework workspace is ready. Invite your team, explore the example AI module, and
+            wire up billing whenever you're ready.
           </Text>
           <Section style={{ margin: "28px 0" }}>
             <Button href={dashboardUrl} style={button}>
               Open dashboard
             </Button>
           </Section>
-          <Text style={muted}>Built on Basework — the advanced, AI-native SaaS starter.</Text>
+          <Text style={muted}>Built on Basework — the complete SaaS template.</Text>
         </Container>
       </Body>
     </Html>

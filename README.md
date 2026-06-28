@@ -2,9 +2,9 @@
 
 # Basework
 
-### The advanced, AI-native, multi-tenant SaaS starter.
+### The complete, multi-tenant SaaS template — you bring the product.
 
-Auth · Organizations & fine-grained RBAC · Stripe billing · **usage-based AI credit metering** · admin panel with impersonation · audit logs · durable jobs — and it **runs with zero configuration.**
+Auth · Organizations & fine-grained RBAC · Stripe billing · **usage-based metering** · admin panel with impersonation · audit logs · durable jobs — every functionality your SaaS needs, so you just build the product. **Runs with zero configuration.**
 
 [![CI](https://github.com/fizzexual/BaseworkSaaS/actions/workflows/ci.yml/badge.svg)](https://github.com/fizzexual/BaseworkSaaS/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-8b5cf6.svg)](./LICENSE)
@@ -22,16 +22,16 @@ Auth · Organizations & fine-grained RBAC · Stripe billing · **usage-based AI 
 
 ## Why Basework?
 
-Most SaaS boilerplates hand you auth and a Stripe button, then fake the hard parts. Basework is built around the parts people actually struggle with:
+Basework isn't tied to one product idea — it's the **complete foundation** every SaaS needs. You bring the product (a CRM, an analytics tool, a dev platform, an AI app — anything); it brings everything around it, and you delete the parts you don't use.
 
-- 🤖 **AI-native billing that actually works.** Every AI call is metered against per-org **credits**; overage is reported to Stripe as usage. This is the wedge — almost no template ships it.
+- 📊 **Usage-based metering & billing.** Meter any action — API calls, exports, AI tokens — as per-org **credits**, enforce plan limits, and report overage to Stripe. The included AI assistant is just one example consumer. Almost no template ships this.
 - 🏢 **Real multi-tenancy.** Organizations, members, invitations, and a **fine-grained permission policy** (not bare role strings). Tenant isolation is covered by tests.
 - 💳 **Billing done right.** Checkout → **signature-verified webhook → database** sync, customer portal, plan changes that reset credits. The "everyone fakes it" part is real and tested.
 - 🛡️ **Admin panel with secure impersonation**, feature flags, and an immutable **audit log**.
 - ⚡ **Zero-config dev.** `pnpm dev` boots a fully seeded demo with **no accounts and no keys** — embedded Postgres (PGlite), plus mock email / billing / AI providers. Flip to production by filling `.env`.
 - ✅ **Genuinely tested.** Typecheck, lint, unit + integration (in-memory Postgres), and Playwright E2E — all in CI with no external services.
 
-> **The 30-second pitch:** clone it, run `pnpm dev`, and you have a streaming AI assistant that meters credits, a multi-tenant dashboard, and a working billing flow — before you've created a single account anywhere.
+> **The 30-second pitch:** clone it, run `pnpm dev`, and you have a multi-tenant dashboard with working billing, usage metering, an admin panel, and a streaming AI *example* — before you've created a single account anywhere. Then delete what you don't need and build your product.
 
 ## Quickstart
 
@@ -140,7 +140,7 @@ tests/                   # vitest (unit + integration) and playwright (e2e)
 
 | | **Basework** | Typical boilerplate |
 | --- | :---: | :---: |
-| Usage-based **AI credit metering** | ✅ | ❌ |
+| Usage-based **metering & credits** | ✅ | ❌ |
 | Multi-tenant orgs + **fine-grained RBAC** | ✅ | partial |
 | Admin **impersonation** | ✅ | ❌ |
 | **Tested** Stripe webhook sync | ✅ | ❌ |

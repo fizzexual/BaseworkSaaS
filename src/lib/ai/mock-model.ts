@@ -33,7 +33,7 @@ function buildReply(question: string): string {
     `${intro}\n\n` +
     "This reply comes from the **built-in mock AI provider** — no API key needed. " +
     "Set `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` to switch to a real model; every token " +
-    "is then metered against your org's **AI credits** and billed as Stripe usage on overage.\n\n" +
+    "is then metered against your org's **usage credits** and billed as Stripe usage on overage.\n\n" +
     "What you're seeing exercised right now:\n\n" +
     "- Real streaming via the Vercel AI SDK\n" +
     "- Per-org **credit deduction** on each message\n" +

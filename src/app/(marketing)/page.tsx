@@ -27,6 +27,8 @@ import { cn } from "@/lib/utils";
 
 const TRUST = ["Next.js 16", "Postgres", "Drizzle", "Better Auth", "Stripe", "AI SDK"];
 
+const USE_CASES = ["a B2B tool", "a CRM", "an analytics app", "a dev platform", "an AI product"];
+
 const FEATURES: {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
@@ -39,16 +41,16 @@ const FEATURES: {
       "Organizations, invitations, and fine-grained role-based access control — wired up and enforced on every request.",
   },
   {
-    icon: Bot,
-    title: "Usage-based AI metering",
-    description:
-      "Meter every model call as credits, enforce per-org limits, and bill overages automatically. Built for AI products.",
-  },
-  {
     icon: CreditCard,
     title: "Stripe billing done right",
     description:
       "Subscriptions, plan changes, and the proration edge cases — with webhook handlers that are actually tested.",
+  },
+  {
+    icon: Activity,
+    title: "Usage-based metering",
+    description:
+      "Meter any action — API calls, exports, AI tokens — as credits, enforce per-plan limits, and bill overage. The AI module is one example consumer.",
   },
   {
     icon: Lock,
@@ -66,13 +68,13 @@ const FEATURES: {
     icon: Activity,
     title: "Durable job queue",
     description:
-      "A persistent, retrying background queue for emails, webhooks, and long-running AI work that survives restarts.",
+      "A persistent, retrying background queue for emails, webhooks, and any long-running work that survives restarts.",
   },
   {
-    icon: KeyRound,
-    title: "Bring-your-own AI keys",
+    icon: Bot,
+    title: "Optional AI module",
     description:
-      "Let customers plug in their own provider keys, or run on yours and bill the difference. Your call.",
+      "A streaming assistant with bring-your-own keys, included as a deletable example of building a metered feature. Keep it or rip it out.",
   },
   {
     icon: Database,
@@ -101,10 +103,10 @@ const STEPS: { command: string; title: string; description: string }[] = [
       "Boots with embedded Postgres and mock auth, billing, and AI providers — no accounts or keys needed.",
   },
   {
-    command: "cp .env.example .env.local",
-    title: "Go live",
+    command: "// add your product",
+    title: "Build your thing",
     description:
-      "Drop in your Stripe and LLM keys to flip from demo mode to a real, billable product.",
+      "Drop your features into the dashboard, flip on Stripe and a real database, and ship. The plumbing is done.",
   },
 ];
 
@@ -118,7 +120,7 @@ const COMPARISON: {
   diy: Cell;
 }[] = [
   {
-    feature: "Usage-based AI credit metering",
+    feature: "Usage-based metering & credits",
     basework: "yes",
     shipfast: "no",
     makerkit: "partial",
@@ -183,7 +185,7 @@ function DashboardPreview() {
   const stats = [
     { label: "MRR", value: "$48.2k", delta: "+12.4%" },
     { label: "Active orgs", value: "1,284", delta: "+8.1%" },
-    { label: "AI credits", value: "312k", delta: "+24%" },
+    { label: "Credits used", value: "312k", delta: "+24%" },
     { label: "Churn", value: "1.9%", delta: "−0.3%" },
   ];
   const bars = [
@@ -202,7 +204,7 @@ function DashboardPreview() {
   ];
   const sidebar = [
     { icon: Activity, label: "Overview", active: true },
-    { icon: Bot, label: "AI Usage" },
+    { icon: Boxes, label: "Your feature" },
     { icon: Users, label: "Members" },
     { icon: CreditCard, label: "Billing" },
     { icon: ScrollText, label: "Audit log" },
@@ -221,7 +223,7 @@ function DashboardPreview() {
           <span className="size-3 rounded-full bg-warning/70" />
           <span className="size-3 rounded-full bg-success/70" />
           <div className="ml-3 inline-flex items-center gap-2 rounded-md border border-border bg-background/60 px-3 py-1 font-mono text-xs text-muted-foreground">
-            app.basework.dev/dashboard
+            app.yoursaas.com/dashboard
           </div>
         </div>
 
@@ -275,7 +277,7 @@ function DashboardPreview() {
             {/* Bar chart */}
             <div className="rounded-lg border border-border bg-card/60 p-4">
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-xs font-medium text-muted-foreground">AI credit usage</p>
+                <p className="text-xs font-medium text-muted-foreground">Usage this period</p>
                 <span className="font-mono text-[11px] text-muted-foreground">312,480</span>
               </div>
               <div className="flex h-28 items-end gap-1.5">
@@ -310,7 +312,7 @@ export default function MarketingHomePage() {
           </Badge>
 
           <h1 className="animate-in-up mx-auto mt-6 max-w-4xl text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Ship your SaaS <span className="text-gradient">this weekend.</span>
+            Everything your SaaS needs — <span className="text-gradient">except the product.</span>
           </h1>
 
           <p className="animate-in-up mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
@@ -333,7 +335,7 @@ export default function MarketingHomePage() {
           </div>
 
           <p className="animate-in-up mt-6 font-mono text-xs text-muted-foreground">
-            Runs zero-config — clone, pnpm install, pnpm dev
+            Bring {USE_CASES.join(" · ")} — the foundation is the same.
           </p>
 
           {/* Product preview */}
@@ -369,7 +371,8 @@ export default function MarketingHomePage() {
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             The unglamorous infrastructure every serious SaaS needs — production-grade, tested, and
-            ready to extend. Stop rebuilding auth and billing for the tenth time.
+            yours to extend. Stop rebuilding auth and billing for the tenth time and just build the
+            product.
           </p>
         </div>
 
@@ -401,7 +404,7 @@ export default function MarketingHomePage() {
           <div className="mx-auto max-w-2xl text-center">
             <Badge variant="default">Quickstart</Badge>
             <h2 className="mt-5 text-3xl font-bold tracking-tight md:text-4xl">
-              From clone to production in three steps
+              From clone to your product in three steps
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
               No setup wizard, no required accounts. It runs the moment you clone it.
@@ -439,8 +442,8 @@ export default function MarketingHomePage() {
             Compare the alternatives
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Other starters get you a landing page and auth. {APP_NAME} gets you a billable,
-            multi-tenant AI product.
+            Other starters get you a landing page and auth. {APP_NAME} gets you a complete,
+            billable, multi-tenant SaaS — you just add the product.
           </p>
         </div>
 

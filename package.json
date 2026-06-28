@@ -2,7 +2,7 @@
   "name": "basework",
   "version": "0.1.0",
   "private": true,
-  "description": "Basework — an advanced, AI-native, multi-tenant SaaS starter. Auth + orgs/RBAC, Stripe billing, AI credit metering, and an admin panel. Runs zero-config.",
+  "description": "Basework — the complete, multi-tenant SaaS template. Auth, orgs & RBAC, Stripe billing, usage metering, and an admin panel. You bring the product; it runs zero-config.",
   "license": "MIT",
   "packageManager": "pnpm@10.6.5",
   "engines": {

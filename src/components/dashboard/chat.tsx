@@ -16,7 +16,7 @@ function messageText(m: UIMessage): string {
 
 const SUGGESTIONS = [
   "What can Basework do?",
-  "Explain the AI credit metering",
+  "Explain the usage metering",
   "How does multi-tenancy work here?",
 ];
 
@@ -70,7 +70,7 @@ export function Chat({
               <div>
                 <p className="font-medium">Basework Assistant</p>
                 <p className="text-sm text-muted-foreground">
-                  Streaming replies, metered per message against your AI credits.
+                  Streaming replies, metered per message against your usage credits.
                 </p>
               </div>
               <div className="flex flex-wrap justify-center gap-2">
@@ -115,7 +115,7 @@ export function Chat({
         )}
         {error && (
           <p className="text-center text-xs text-destructive">
-            Something went wrong — you may be out of AI credits. Check Billing to upgrade.
+            Something went wrong — you may be out of usage credits. Check Billing to upgrade.
           </p>
         )}
       </div>

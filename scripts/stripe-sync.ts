@@ -30,7 +30,7 @@ async function main() {
 
   try {
     const meter = await (stripe as any).billing.meters.create({
-      display_name: "AI credits",
+      display_name: "Usage credits",
       event_name: "ai_credits",
       default_aggregation: { formula: "sum" },
       value_settings: { event_payload_key: "value" },

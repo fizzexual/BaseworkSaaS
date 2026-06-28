@@ -35,7 +35,7 @@ export function PlanCard({ plan }: { plan: Plan }) {
           <span className="text-sm text-muted-foreground">/mo</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          {formatNumber(plan.includedCredits)} AI credits · {seatsLabel}
+          {formatNumber(plan.includedCredits)} usage credits · {seatsLabel}
         </p>
       </CardHeader>
 

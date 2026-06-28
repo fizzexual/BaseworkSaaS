@@ -8,9 +8,15 @@ import { UserMenu } from "@/components/dashboard/user-menu";
 import { APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-const NAV = [
+const NAV: {
+  href: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+  example?: boolean;
+}[] = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/ai", label: "AI Assistant", icon: Bot },
+  { href: "/dashboard/ai", label: "AI Assistant", icon: Bot, example: true },
   { href: "/dashboard/members", label: "Members", icon: Users },
   { href: "/dashboard/usage", label: "Usage", icon: Activity },
   { href: "/dashboard/billing", label: "Billing", icon: CreditCard },
@@ -59,6 +65,11 @@ export function Sidebar({ user, activeOrg, memberships, superAdmin }: SidebarPro
             >
               <Icon className="size-4" />
               {item.label}
+              {item.example && (
+                <span className="ml-auto rounded bg-secondary px-1.5 py-0.5 text-[10px] font-normal text-muted-foreground">
+                  example
+                </span>
+              )}
             </Link>
           );
         })}
