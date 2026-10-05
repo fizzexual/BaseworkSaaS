@@ -1,6 +1,6 @@
 <div align="center">
 
-# Basework
+# Basework 🌱
 
 ### The complete, multi-tenant SaaS template — you bring the product.
 
@@ -19,6 +19,10 @@ Auth · Organizations & fine-grained RBAC · Stripe billing · **usage-based met
 </div>
 
 ---
+
+## About
+
+Basework is a starter codebase for building a multi-tenant SaaS product on Next.js. It is for developers who want auth, organizations, billing, usage metering and an admin panel already in place, so they can focus on their own product. It runs locally with mock providers and no keys, and switches to real Postgres, Stripe, email and LLM providers when the matching `.env` values are set.
 
 ## Why Basework?
 
